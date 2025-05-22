@@ -22,7 +22,7 @@ const Register = () => {
         setError('');
         setMessage('');
 
-        const URL = "http://localhost:8000"
+        const URL = "https://kr-project-1-6v8y.onrender.com"
         fetch(`${URL}/register`, {
             method: 'POST',
             headers: {

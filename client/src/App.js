@@ -25,7 +25,7 @@ function App() {
 
   const fetchProfile = () => {
     const token = localStorage.getItem('token');
-    const URL = "http://localhost:8000"
+    const URL = "https://kr-project-1-6v8y.onrender.com"
     fetch(`${URL}/profile`, {
         method: 'GET',
         headers: {
