@@ -8,7 +8,7 @@ function Profile({ profile }) {
                     <h1 class="profile-heading">Welcome {profile.username}!</h1>
                 </div>
             ) : (
-                <h1 class="profile-heading">Profile not available.</h1>
+                <h1 class="profile-heading">Profile Loading...</h1>
             )
         }
       </div>
