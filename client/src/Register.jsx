@@ -23,38 +23,42 @@ const Register = () => {
         e.preventDefault();
         setError('');
         setMessage('');
-
         setIsLoading(true);
-
-        const URL = "https://kr-project-1-6v8y.onrender.com"
-        fetch(`${URL}/register`, {
+      
+        const URL = "http://localhost:8000";
+      
+        const form = new FormData();
+        form.append("username", formData.username);
+        form.append("email", formData.email);
+        form.append("password", formData.password);
+        form.append("image", formData.image); // file object
+      
+        try {
+          const res = await fetch(`${URL}/register`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            },
-            body: JSON.stringify(formData),
-        })
-        .then((res) => {
-            if (!res.ok) {
-                return res.json().then(err => {
-                  throw new Error(err.message);
-                });
-              }
-            return res.json();
-        })
-        .then((data) => {
-            setMessage(data.message)
-            setFormData({
-                username: '',
-                email: '',
-                password: ''
-            })
-        })
-        .catch((err) => {
-            setError(err.message);
-        })
-        .finally(() => setIsLoading(false));
-    };
+            body: form, 
+          });
+      
+          const data = await res.json();
+      
+          if (!res.ok) {
+            throw new Error(data.message || 'Registration failed');
+          }
+      
+          setMessage(data.message);
+          setFormData({
+            username: '',
+            email: '',
+            password: '',
+            image: null
+          });
+        } catch (err) {
+          setError(err.message);
+        } finally {
+          setIsLoading(false);
+        }
+      };
+      
 
     return ( 
         <div className="register-container">
