@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import Header from "./Header";
 import Register from "./Register";
 import Home from "./Home";
@@ -6,9 +6,11 @@ import Login from "./Login";
 import Profile from "./Profile";
 import {Routes, Route, Navigate} from "react-router-dom";
 // import Login from "./Login";
+import { TokenContext } from "./TokenProvider";
 
 function App() {
-  const [token, setToken] = useState(() => localStorage.getItem('token') || null);
+  // const [token, setToken] = useState(() => localStorage.getItem('token') || null);
+  const { token , setToken } = useContext(TokenContext);
   const [profile, setProfile] = useState(null);
   const [error, setError] = useState(null);
 
@@ -40,13 +42,11 @@ function App() {
     .catch(() => setError('Please log in first'));
   };
 
-  const handleLogout = () => {
-    setToken(null);
-  }; 
+  
 
   return (
     <>
-      <Header token={token} logout={handleLogout}  />
+      <Header  />
 
       <Routes>
         <Route path="/" element={<Home />} />
@@ -63,5 +63,22 @@ function App() {
     </>
   );
 }
+// import { ToastContainer, toast } from 'react-toastify';
+// import 'react-toastify/dist/ReactToastify.css';
 
-export default App;
+// function App() {
+//   const notify = () => toast("Hello, this is a toast!");
+
+//   return (
+//     <div>
+//       <button onClick={notify}>Show Toast</button>
+//       <ToastContainer 
+//       position='bottom-center'
+//       autoClose={6000}
+//       closeOnClick />
+//     </div>
+//   );
+// }
+
+
+// export default App;

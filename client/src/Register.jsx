@@ -6,10 +6,12 @@ const Register = () => {
         username: '',
         email: '',
         password: '',
+        image: null
     });
 
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     // set form data
     const handleChange = (e) => {
@@ -22,11 +24,13 @@ const Register = () => {
         setError('');
         setMessage('');
 
+        setIsLoading(true);
+
         const URL = "https://kr-project-1-6v8y.onrender.com"
         fetch(`${URL}/register`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'multipart/form-data'
             },
             body: JSON.stringify(formData),
         })
@@ -48,12 +52,18 @@ const Register = () => {
         })
         .catch((err) => {
             setError(err.message);
-        });
+        })
+        .finally(() => setIsLoading(false));
     };
 
-    return (
+    return ( 
         <div className="register-container">
             <h2>Register</h2>
+            {
+            isLoading && (
+                <div >Please wait while registering.. </div>
+            ) 
+            }
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
                     <input
@@ -63,7 +73,6 @@ const Register = () => {
                         placeholder='Username'
                         value={formData.username}
                         onChange={handleChange}
-                        
                     />
                 </div>
 
@@ -74,8 +83,7 @@ const Register = () => {
                         name="email"
                         placeholder='Email'
                         value={formData.email}
-                        onChange={handleChange}
-                        
+                        onChange={handleChange}  
                     />
                 </div>
             
@@ -87,16 +95,25 @@ const Register = () => {
                         placeholder="Password"
                         value={formData.password}
                         onChange={handleChange}
-                        
                     />
                 </div>
+
+                <input
+                    name="image"
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => setForm({ ...form, image: e.target.files[0] })}
+                    required
+                />
 
                 {error && <p style={{ color: 'red' }}>{error}</p>}
                 <button type="submit">Register</button>
                 {message && <p style={{ color: 'green' }}>{message}</p>}
             </form>
+            
         </div>
-    );
-};
+   
+    )
+}
 
 export default Register;

@@ -1,7 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from "react-router-dom";
+import { TokenContext } from './TokenProvider';
 
-export default function Header({ token, logout }) {
+export default function Header() {
+  const {token, setToken} = useContext(TokenContext);
+  const handleLogout = () => {
+    setToken(null);
+  }; 
+
   return (
     <header>
       <nav className="navbar">
@@ -14,7 +20,7 @@ export default function Header({ token, logout }) {
             <>
               <button
                 className="logoutBtn"
-                onClick={logout}
+                onClick={handleLogout}
                 aria-label="Logout"
               >
                 Logout
