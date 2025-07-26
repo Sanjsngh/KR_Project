@@ -9,13 +9,16 @@ const router = express.Router();
 const { cleanUpAndValidate } = require("../utils/authUtil");
 const User = require("../MODELS/userSchema.js");
 
+const upload = require("../middleware/upload.js");
+
 
 router.get("/", (req, res) => {
     return res.send("Login to see your profile");
 })
 
-router.post("/register", async(req, res) => {
+router.post("/register",  upload.single('image'), async(req, res) => {
     const {email, password, username} = req.body;
+    const image = req.file?.filename || "";
 
     // data validation 
     try {
@@ -37,7 +40,8 @@ router.post("/register", async(req, res) => {
         const user = new User({
             username: username,
             email: email,
-            password: hashedPassword
+            password: hashedPassword,
+            image,
         });
 
         const userDb = await user.save();
@@ -149,11 +153,16 @@ router.get("/profile", authMiddleware, async (req, res) => {
           message: "User not found",
         });
       }
+
+      const imageURL = user.image ? `${req.protocol}://${req.get("host")}/uploads/${user.image}`: null;
   
       res.status(200).json({
         status: 200,
         message: "Profile data fetched successfully",
-        user,
+        user: {
+            ...user,
+            image: imageURL
+        },
       });
     } catch (error) {
       res.status(500).json({
