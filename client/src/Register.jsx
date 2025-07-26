@@ -102,7 +102,7 @@ const Register = () => {
                     name="image"
                     type="file"
                     accept="image/*"
-                    onChange={(e) => setForm({ ...form, image: e.target.files[0] })}
+                    onChange={(e) => setFormData({ ...formData, image: e.target.files[0] })}
                     required
                 />
 
