@@ -17,8 +17,10 @@ router.get("/", (req, res) => {
 })
 
 router.post("/register",  upload.single('image'), async(req, res) => {
+    // console.log(image);
     const {email, password, username} = req.body;
     const image = req.file?.filename || "";
+    console.log(image)
 
     // data validation 
     try {
@@ -160,7 +162,7 @@ router.get("/profile", authMiddleware, async (req, res) => {
         status: 200,
         message: "Profile data fetched successfully",
         user: {
-            ...user,
+            ...user.toObject(),
             image: imageURL
         },
       });

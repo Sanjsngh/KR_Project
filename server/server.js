@@ -9,7 +9,7 @@ require("./db.js");
 // Middlewares
 app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded());
+app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static('uploads'));
 app.use("/", authRoute);
 
